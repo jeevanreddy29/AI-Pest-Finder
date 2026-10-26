@@ -1,22 +1,23 @@
 # AI Pest Finder 🌿🐛
 
-AI Pest Finder is an AI-powered web application designed to help users identify agricultural pests and related plant conditions from uploaded images. It uses deep learning models and a FastAPI backend to process images and return prediction results through a simple web interface.
+AI Pest Finder is a web-based application that uses deep learning to analyze uploaded agricultural images and predict pest-related classes supported by its trained models. It combines a web frontend with a FastAPI backend to provide an accessible image prediction workflow.
 
 ## 🚀 Live Application
 
-- **Frontend:** https://ai-pest-finder.vercel.app/
+- **Frontend Website:** https://ai-pest-finder.vercel.app/
 - **Backend API:** https://ai-pest-finder-api.onrender.com
 - **Interactive API Documentation:** https://ai-pest-finder-api.onrender.com/docs
 
 ## ✨ Features
 
-- **Image Upload:** Upload an image for analysis through the web interface.
-- **AI-Based Prediction:** Uses trained deep learning models to analyze submitted images.
-- **Pest Identification:** Predicts a class from the model's supported labels.
-- **Image Validation:** Processes uploaded images through the backend API.
-- **REST API:** Provides prediction functionality through FastAPI.
-- **Web Interface:** Simple frontend built with HTML, CSS, and JavaScript.
-- **Model-Based Classification:** Uses trained Keras models for image classification.
+- **Image Upload:** Submit an image through the web interface for analysis.
+- **AI-Based Classification:** Uses trained deep learning models to analyze images.
+- **Pest Prediction:** Returns a predicted class supported by the model.
+- **Image Processing:** Processes uploaded images through the backend API.
+- **REST API:** Exposes prediction functionality using FastAPI.
+- **Interactive API Documentation:** Explore and test API endpoints through Swagger UI.
+- **Web Interface:** Built with HTML, CSS, and JavaScript.
+- **Model Integration:** Uses trained Keras models and a JSON class mapping.
 
 ## 🛠️ Technology Stack
 
@@ -34,14 +35,14 @@ AI Pest Finder is an AI-powered web application designed to help users identify 
 - TensorFlow / Keras
 
 ### Machine Learning
-- MobileNetV2-based classification model
-- Trained Keras model files
+- MobileNetV2-based image classification
+- Trained Keras models
 - JSON-based class mapping
 
-### Deployment
-- Vercel for the frontend
-- Render for the backend API
-- GitHub for source code management
+### Deployment and Version Control
+- Vercel — frontend hosting
+- Render — backend hosting
+- Git and GitHub — version control
 
 ## 📁 Project Structure
 
@@ -58,6 +59,9 @@ AI-Pest-Finder/
 │   ├── 01_dataset_setup_clean.ipynb
 │   ├── 02_fastapi_cleaned.ipynb
 │   └── 03_non_pest_cleaned.ipynb
+├── dataset/                  # Local agricultural image dataset
+├── non_pest/                 # Local non-pest image dataset
+├── data/                     # Supporting local data, if used
 ├── index.html
 ├── script.js
 ├── style.css
@@ -67,15 +71,16 @@ AI-Pest-Finder/
 └── README.md
 ```
 
-## ⚙️ Installation and Setup
+**Note:** The `dataset/`, `non_pest/`, and local `data/` directories may be excluded from GitHub because they contain large datasets or local development files. Their presence in this diagram describes the local project structure; it does not mean their contents are committed to the repository.
+
+## ⚙️ Installation and Local Setup
 
 ### Prerequisites
 
-Install the following before running the project locally:
-
-- Python
+- Python installed on your computer
 - pip
 - Git
+- A web browser
 
 ### 1. Clone the Repository
 
@@ -90,9 +95,9 @@ cd AI-Pest-Finder
 pip install -r backend/requirements.txt
 ```
 
-### 3. Start the Backend Server
+### 3. Start the Backend
 
-From the project root directory, run:
+Run the following command from the project root:
 
 ```bash
 uvicorn backend.main:app --reload
@@ -104,71 +109,99 @@ The local API will be available at:
 http://127.0.0.1:8000
 ```
 
-Interactive API documentation:
+Open the interactive API documentation at:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-### 4. Run the Frontend
+### 4. Open the Frontend
 
-Open `index.html` in a web browser, or use a local development server to serve the project files.
+Open `index.html` in your browser or serve the project files using a local development server.
 
-The frontend is configured to communicate with the deployed Render API. To use a local backend instead, update the API base URL in `script.js` to:
+By default, `script.js` is configured to communicate with the deployed Render backend. To use your local backend instead, update the API base URL in `script.js` to:
 
 ```javascript
 http://127.0.0.1:8000
 ```
 
+Change only the API URL in the existing code; do not replace unrelated JavaScript.
+
+### 5. Dataset Setup
+
+The large `dataset/` and `non_pest/` directories are not required to be committed to GitHub for normal deployment when the application uses the trained models already included in `models/`.
+
+For local training or experimentation, prepare the datasets according to the instructions in the relevant Jupyter notebooks. Dataset availability and directory paths may need to be configured separately.
+
 ## 🔌 API Endpoints
 
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/` | Returns the API home response |
+| GET | `/` | Returns the API's home response |
 | GET | `/health` | Checks API health |
-| POST | `/predict` | Processes an uploaded image and returns prediction results |
+| POST | `/predict` | Accepts an image and returns prediction results |
 
-For request formats and response details, visit the [interactive API documentation](https://ai-pest-finder-api.onrender.com/docs).
+For details about request formats and responses, visit the [Interactive API Documentation](https://ai-pest-finder-api.onrender.com/docs).
 
 ## 🧠 Machine Learning Models
 
-The project includes trained Keras model files and a JSON class-mapping file.
+The `models/` directory contains the trained models and class mapping used by the application.
 
-- `final_pest_mobilenetv2_74_46.keras` — primary image classification model.
-- `gate_model.keras` — additional model used by the application.
-- `pest_class_mapping.json` — maps model output classes to their corresponding labels.
+- **`final_pest_mobilenetv2_74_46.keras`** — primary MobileNetV2-based classification model.
+- **`gate_model.keras`** — additional model used by the application.
+- **`pest_class_mapping.json`** — maps model output classes to their corresponding labels.
 
-Predictions depend on the training data, image quality, supported classes, and model performance.
+Prediction results depend on the supported classes, training data, image quality, and model performance. The predictions should be treated as assistance rather than guaranteed agricultural diagnoses.
 
-## 🔒 Dataset and Model Files
+## 📓 Jupyter Notebooks
 
-The `.gitignore` configuration excludes local dataset directories and temporary development files. Trained model files required by the deployed backend are stored in the `models/` directory.
+The `notebooks/` directory contains notebooks for dataset preparation, backend-related experimentation, and non-pest classification work.
 
-Only use datasets and images that you have permission to use.
+- `01_dataset_setup_clean.ipynb`
+- `02_fastapi_cleaned.ipynb`
+- `03_non_pest_cleaned.ipynb`
+
+These notebooks document development and experimentation workflows. Running training or dataset preparation may require the relevant image datasets to be available locally.
+
+## 🔒 Dataset Management
+
+Large image datasets are excluded from GitHub to avoid unnecessarily increasing repository size.
+
+The `.gitignore` file should include:
+
+```gitignore
+dataset/
+non_pest/
+data/
+```
+
+Keep the trained models required by the deployed backend available in the `models/` directory. Do not remove or ignore those models unless you change the backend to obtain them from another reliable source.
 
 ## ⚠️ Limitations
 
-- Predictions are limited to the classes supported by the trained models.
-- Results may be affected by image quality, lighting, background objects, and image resolution.
-- Model predictions should be treated as assistance rather than guaranteed agricultural diagnoses.
-- The free Render service may sleep after inactivity, causing the first request after a quiet period to take longer.
-- Reliable predictions depend on the quality and coverage of the training dataset.
+- Predictions are limited to classes supported by the trained models.
+- Image quality, lighting, background objects, and resolution can affect results.
+- Model predictions are not a substitute for professional agricultural advice.
+- Render's free web services may sleep after inactivity, which can delay the first request after a quiet period.
+- Training or retraining requires the appropriate datasets and compatible dependencies.
 
-## 🔮 Future Enhancements
+## 🔮 Future Improvements
 
-- Improve model accuracy with additional high-quality training data.
-- Add confidence scores and clearer prediction explanations.
+- Improve model accuracy using additional, representative training data.
+- Display prediction confidence when supported by the model output.
 - Improve mobile responsiveness and accessibility.
 - Add prediction history and downloadable reports.
 - Add multilingual support for farmers.
-- Optimize inference speed and deployment reliability.
+- Optimize inference speed and backend availability.
+- Add clear guidance when an uploaded image is unsupported or uncertain.
 
 ## 👨‍💻 Author
 
 **Jeevan Reddy**
 
-GitHub: [jeevanreddy29](https://github.com/jeevanreddy29)
+GitHub: https://github.com/jeevanreddy29
 
 ## 📄 License
 
-Add a license file if you intend to distribute the project publicly. Until a license is specified, reuse permissions should not be assumed.
+A license has not been specified. Add an appropriate `LICENSE` file if you intend to distribute the project and define permissions for reuse.
+
