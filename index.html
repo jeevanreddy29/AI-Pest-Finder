@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Pest Finder | Smart Agriculture</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">
+        <span class="logo-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+                <path d="M11 20V10"/>
+            </svg>
+        </span>
+        <span>AI Pest Finder</span>
+    </div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#help">How It Works</a>
+    </nav>
+
+    <button class="nav-btn" onclick="scrollToDetector()">
+        Get Started
+    </button>
+</header>
+
+
+<!-- HERO -->
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="badge">
+             SMART AGRICULTURE
+            <span>•</span>
+            AI POWERED
+        </div>
+
+        <h1>
+            Identify Crop Pests
+            <span>Smarter & Faster</span>
+        </h1>
+
+        <p>
+            Upload an image of your affected crop and let AI identify
+            possible pests, analyze infestation levels, and provide
+            intelligent treatment guidance.
+        </p>
+
+        <div class="hero-buttons">
+            <button class="primary-btn" onclick="scrollToDetector()">
+                Scan Your Crop
+            </button>
+
+            <button class="secondary-btn" onclick="document.getElementById('about').scrollIntoView()">
+                Learn More
+            </button>
+        </div>
+
+        <div class="hero-stats">
+            <div>
+                <strong>AI</strong>
+                <small>Powered Detection</small>
+            </div>
+
+            <div>
+                <strong>Fast</strong>
+                <small>Image Analysis</small>
+            </div>
+
+            <div>
+                <strong>Smart</strong>
+                <small>Treatment Guidance</small>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hero-image">
+        <div class="image-card">
+            <img src="hero-pest.jpg" alt="AI Crop Pest Detection" class="hero-card-img">
+        </div>
+    </div>
+
+</section>
+
+
+<!-- DETECTOR -->
+<section class="detector-section" id="detect">
+
+    <div class="section-heading">
+        <div class="badge">AI PEST DETECTION</div>
+
+        <h2>Detect Crop Pests</h2>
+
+        <p>
+            Upload a clear image of your crop or visible insect pest.
+            Our AI model will analyze the image and provide useful insights.
+        </p>
+    </div>
+
+    <div class="detector-card">
+
+        <div class="upload-area" id="uploadArea">
+
+            <div class="upload-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+            </div>
+
+            <h3>Upload Crop Image</h3>
+
+            <p>
+                Drag & drop your image here or select a file
+            </p>
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                hidden
+            >
+
+            <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+                Choose Image
+            </button>
+
+            <span class="file-info">
+                JPG, PNG or WEBP • Max 10MB
+            </span>
+
+        </div>
+
+        <div class="preview-area" id="previewArea">
+
+            <div class="preview-placeholder">
+                <span class="placeholder-icon">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#92a095" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                </span>
+                <p>Image preview will appear here</p>
+            </div>
+
+            <img id="previewImage" alt="Crop Preview">
+
+        </div>
+
+    </div>
+
+    <button class="analyze-btn" id="analyzeBtn" onclick="analyzeImage()">
+         Analyze with AI
+    </button>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>AI is analyzing your crop image...</p>
+    </div>
+
+    <div class="result-card" id="resultCard">
+
+        <div class="result-header">
+            <div>
+                <span class="result-label">AI DETECTION RESULT</span>
+                <h3 id="pestName">Possible Pest Detected</h3>
+            </div>
+
+            <span class="confidence">
+                94% Confidence
+            </span>
+        </div>
+
+        <div class="result-grid">
+
+            <div class="result-item">
+                <span class="result-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="8" height="14" x="8" y="6" rx="4"/>
+                        <path d="m19 7-3 2"/>
+                        <path d="m5 7 3 2"/>
+                        <path d="m19 19-3-2"/>
+                        <path d="m5 19 3-2"/>
+                        <path d="M20 13h-4"/>
+                        <path d="M4 13h4"/>
+                        <path d="m10 4 1 2"/>
+                        <path d="m14 4-1 2"/>
+                    </svg>
+                </span>
+                <div>
+                    <small>Detected Pest</small>
+                    <strong id="pestResult">Aphids</strong>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <span class="result-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                </span>
+                <div>
+                    <small>Infestation Level</small>
+                    <strong id="infestationLevel">Moderate</strong>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <span class="result-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </span>
+                <div>
+                    <small>Crop Condition</small>
+                    <strong>Needs Attention</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="treatment">
+            <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px;">
+                    <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+                    <path d="M9 18h6"/>
+                    <path d="M10 22h4"/>
+                </svg>
+                Recommended Action
+            </h4>
+
+            <p>
+                Remove heavily affected leaves and monitor the crop regularly.
+                Use appropriate pest-control methods according to local
+                agricultural recommendations.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="help">
+
+    <div class="section-heading">
+
+        <div class="badge">HOW IT WORKS</div>
+
+        <h2>How AI Pest Finder Helps</h2>
+
+        <p>
+            Simple AI-powered tools to help identify and manage crop pests.
+        </p>
+
+    </div>
+
+    <div class="steps">
+
+        <div class="step-card">
+            <div class="step-number">01</div>
+            <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+            </div>
+
+            <h3>Upload Image</h3>
+
+            <p>
+                Upload a clear photo of your affected crop or visible insect.
+            </p>
+        </div>
+
+
+        <div class="step-card">
+            <div class="step-number">02</div>
+            <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2"/>
+                    <rect x="9" y="9" width="6" height="6"/>
+                    <line x1="9" y1="1" x2="9" y2="4"/>
+                    <line x1="15" y1="1" x2="15" y2="4"/>
+                    <line x1="9" y1="20" x2="9" y2="23"/>
+                    <line x1="15" y1="20" x2="15" y2="23"/>
+                    <line x1="20" y1="9" x2="23" y2="9"/>
+                    <line x1="20" y1="14" x2="23" y2="14"/>
+                    <line x1="1" y1="9" x2="4" y2="9"/>
+                    <line x1="1" y1="14" x2="4" y2="14"/>
+                </svg>
+            </div>
+
+            <h3>AI Detection</h3>
+
+            <p>
+                Our AI model analyzes the image and identifies the possible pest.
+            </p>
+        </div>
+
+
+        <div class="step-card">
+            <div class="step-number">03</div>
+            <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+            </div>
+
+            <h3>Get Analysis</h3>
+
+            <p>
+                View pest information and understand the possible infestation level.
+            </p>
+        </div>
+
+
+        <div class="step-card">
+            <div class="step-number">04</div>
+            <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#218838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <polyline points="9 12 11 14 15 10"/>
+                </svg>
+            </div>
+
+            <h3>Treatment Guidance</h3>
+
+            <p>
+                Receive useful guidance for protecting your crops.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+
+    <div class="about-content">
+
+        <div>
+            <div class="badge">ABOUT AI PEST FINDER</div>
+
+            <h2>
+                Protecting Crops with
+                <span>Artificial Intelligence</span>
+            </h2>
+
+            <p>
+                AI Pest Finder is a smart agriculture platform designed to
+                help farmers and agricultural users identify crop pests
+                using artificial intelligence and image analysis.
+            </p>
+
+            <p>
+                Instead of manually searching for pests, users can simply
+                upload an image and receive AI-powered information about
+                the possible pest and recommended actions.
+            </p>
+        </div>
+
+        <div class="about-box">
+
+            <div class="about-feature">
+                <span class="feature-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5cd678" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                        <rect x="9" y="9" width="6" height="6"/>
+                        <line x1="9" y1="1" x2="9" y2="4"/>
+                        <line x1="15" y1="1" x2="15" y2="4"/>
+                        <line x1="9" y1="20" x2="9" y2="23"/>
+                        <line x1="15" y1="20" x2="15" y2="23"/>
+                        <line x1="20" y1="9" x2="23" y2="9"/>
+                        <line x1="20" y1="14" x2="23" y2="14"/>
+                        <line x1="1" y1="9" x2="4" y2="9"/>
+                        <line x1="1" y1="14" x2="4" y2="14"/>
+                    </svg>
+                </span>
+                <div>
+                    <strong>AI Image Analysis</strong>
+                    <p>Analyze crop images using machine learning.</p>
+                </div>
+            </div>
+
+            <div class="about-feature">
+                <span class="feature-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5cd678" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="22" y1="12" x2="18" y2="12"/>
+                        <line x1="6" y1="12" x2="2" y2="12"/>
+                        <line x1="12" y1="6" x2="12" y2="2"/>
+                        <line x1="12" y1="22" x2="12" y2="18"/>
+                    </svg>
+                </span>
+                <div>
+                    <strong>Pest Identification</strong>
+                    <p>Identify possible insect pests affecting crops.</p>
+                </div>
+            </div>
+
+            <div class="about-feature">
+                <span class="feature-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5cd678" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 11 14 15 10"/>
+                    </svg>
+                </span>
+                <div>
+                    <strong>Crop Protection</strong>
+                    <p>Get guidance to help manage pest problems.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <div class="footer-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5cd678" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -3px; margin-right: 6px;">
+            <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+            <path d="M11 20V10"/>
+        </svg>
+        <span>AI Pest Finder</span>
+    </div>
+
+    <p>
+        AI-powered crop pest detection for smarter agriculture.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 AI Pest Finder. Built for Smart Agriculture.
+    </small>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
