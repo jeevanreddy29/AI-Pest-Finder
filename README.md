@@ -65,7 +65,6 @@ AI-Pest-Finder/
 ├── index.html
 ├── script.js
 ├── style.css
-├── family.jpg
 ├── hero-pest.jpg
 ├── .gitignore
 └── README.md
